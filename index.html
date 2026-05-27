@@ -1,229 +1,423 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Growth and Decline — Ganita Prakash Grade 8</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Growth & Decline — Ch. 8</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f5f4f0;--surface:#fff;--surface2:#f0ede8;--border:#d8d4cc;
-  --text:#1a1814;--text2:#5a5650;--text3:#9a958e;
-  --blue:#2c5f9e;--red:#c0392b;--green:#1a7a4a;--orange:#e08020;
-  --font:'DM Sans',-apple-system,sans-serif;--mono:'DM Mono',ui-monospace,monospace;
+  --ink:#0f0e0c;--paper:#f7f5f0;--cream:#ede9e1;--rule:#c8c2b5;
+  --display:'Bebas Neue',Impact,sans-serif;
+  --mono:'DM Mono',monospace;--body:'DM Sans',sans-serif;
 }
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;line-height:1.5}
-.page{max-width:860px;margin:0 auto;padding:28px 20px}
-.lbl{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:5px}
-.title{font-size:22px;font-weight:700;margin-bottom:5px}
-.subtitle{font-size:14px;color:var(--text2);margin-bottom:22px;max-width:560px;line-height:1.5}
-.card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:22px;margin-bottom:16px}
+html{background:var(--paper)}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);min-height:100vh;
+  -webkit-font-smoothing:antialiased;padding:0}
 
-/* Scenario selector */
-.scene-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
-.sc-btn{padding:7px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:12.5px;font-weight:500;color:var(--text2);background:var(--surface);cursor:pointer;font-family:var(--font);transition:all .12s}
-.sc-btn.active{background:var(--text);color:#fff;border-color:var(--text)}
+/* accent per scenario */
+:root{--accent:#1a5fa8;--accent-lt:#e8eef9;--accent-bg:#f0f4fb}
 
-/* Sliders */
-.sl-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.sl-row label{font-size:13px;font-weight:500;color:var(--text2);min-width:140px}
-.sl-row input[type=range]{flex:1;height:5px;cursor:pointer}
-.sl-val{font-family:var(--mono);font-size:15px;font-weight:700;min-width:80px;text-align:right}
+/* MASTHEAD */
+.masthead{border-bottom:3px solid var(--ink);padding:16px 28px 12px;
+  display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:baseline}
+.mast-tag{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;opacity:.4;white-space:nowrap}
+.mast-title{font-family:var(--display);font-size:clamp(28px,7vw,60px);line-height:.92;
+  text-align:center;letter-spacing:.02em}
+.mast-right{font-family:var(--mono);font-size:10px;opacity:.4;text-align:right;white-space:nowrap}
+@media(max-width:520px){.masthead{grid-template-columns:1fr}.mast-tag,.mast-right{display:none}}
 
-/* Main display */
-.main-layout{display:grid;grid-template-columns:1fr 280px;gap:18px;align-items:start;margin-top:16px}
-@media(max-width:580px){.main-layout{grid-template-columns:1fr}}
-canvas{display:block;width:100%;border-radius:8px;border:1.5px solid var(--border);background:#fafaf8}
+/* SCENARIO TABS */
+.scene-bar{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;border-bottom:2px solid var(--ink)}
+.sn-btn{padding:10px 0;border:none;background:transparent;font-family:var(--mono);
+  font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink);opacity:.35;cursor:pointer;border-bottom:3px solid transparent;
+  margin-bottom:-2px;transition:all .15s;line-height:1.3;text-align:center}
+.sn-btn.active{opacity:1;border-bottom-color:var(--accent)}
+.sn-btn:hover:not(.active){opacity:.6}
 
-/* Side panel */
-.side-panel{display:flex;flex-direction:column;gap:10px}
-.stat-item{background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px}
-.stat-item .si-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:3px}
-.stat-item .si-val{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text)}
+/* SCENARIO CONTEXT */
+.context-strip{padding:14px 28px;background:var(--accent-bg);border-bottom:1px solid var(--rule);
+  font-size:14px;line-height:1.6;color:var(--ink)}
+.context-strip strong{font-weight:700}
 
-.insight{background:#fff8f0;border:1.5px solid #f0d8c0;border-radius:10px;padding:13px 18px;font-size:13px;color:#6b4400;line-height:1.65}
-.insight strong{color:#a05000}
-.insight .eq{font-family:var(--mono);font-size:12px;display:block;margin:2px 0}
+/* CONTROLS */
+.controls{padding:18px 28px;background:var(--cream);border-bottom:1px solid var(--rule);
+  display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:520px){.controls{grid-template-columns:1fr;gap:10px}}
+.ctrl-block .ctrl-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.ctrl-label{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink);opacity:.5}
+.ctrl-val{font-family:var(--display);font-size:26px;letter-spacing:.02em;line-height:1;
+  color:var(--accent)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;
+  background:var(--rule);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
+  width:20px;height:20px;border-radius:50%;background:var(--accent);
+  border:3px solid var(--paper);box-shadow:0 0 0 1.5px var(--accent);cursor:pointer}
+
+/* STEP CONTROLS */
+.step-bar{padding:16px 28px;border-bottom:1px solid var(--rule);
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.step-lbl{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink);opacity:.4}
+.step-btn{width:44px;height:44px;border:2px solid var(--ink);background:transparent;
+  font-family:var(--display);font-size:22px;color:var(--ink);cursor:pointer;
+  transition:background .12s,color .12s;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.step-btn:hover{background:var(--ink);color:var(--paper)}
+.step-btn:disabled{opacity:.25;cursor:not-allowed}
+.step-btn:disabled:hover{background:transparent;color:var(--ink)}
+.step-num{font-family:var(--display);font-size:clamp(18px,4vw,32px);letter-spacing:.02em;
+  color:var(--ink);min-width:80px}
+.reset-btn{margin-left:auto;padding:8px 16px;border:1.5px solid var(--rule);background:transparent;
+  font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink);opacity:.5;cursor:pointer;transition:all .12s}
+.reset-btn:hover{border-color:var(--ink);opacity:1}
+
+/* HERO NUMBER */
+.hero-section{padding:20px 28px;border-bottom:1px solid var(--rule);
+  display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:stretch}
+.hero-cell{padding:0;display:flex;flex-direction:column;gap:4px}
+.hero-cell:first-child{border-right:1px solid var(--rule);padding-right:24px}
+.hero-cell:last-child{padding-left:24px}
+.hc-label{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink);opacity:.4;margin-bottom:4px}
+.hc-val{font-family:var(--display);font-size:clamp(32px,6vw,58px);line-height:1;color:var(--ink)}
+.hc-val.accent{color:var(--accent)}
+.hc-sub{font-family:var(--mono);font-size:12px;color:var(--ink);opacity:.5;margin-top:4px}
+
+/* STEP CALCULATION SHOWN */
+.calc-strip{padding:14px 28px;background:var(--ink);
+  font-family:var(--mono);font-size:13px;color:#f0ece3;line-height:1.7;
+  min-height:52px;border-bottom:1px solid var(--rule)}
+.calc-strip .hl{color:var(--accent);font-weight:600}
+.calc-strip em{font-style:normal;color:#e8a840;font-weight:600}
+
+/* CHART */
+.chart-section{padding:18px 28px;border-bottom:1px solid var(--rule)}
+.chart-head{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink);opacity:.4;margin-bottom:12px}
+
+/* NET CHANGE BAND */
+.change-band{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--rule)}
+.cb-cell{padding:16px 22px;border-right:1px solid var(--rule);display:flex;flex-direction:column;gap:3px}
+.cb-cell:last-child{border-right:none}
+.cb-label{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink);opacity:.4}
+.cb-big{font-family:var(--display);font-size:clamp(24px,4vw,40px);letter-spacing:.02em;line-height:1}
+.cb-sub{font-family:var(--mono);font-size:11px;color:var(--ink);opacity:.4}
+@media(max-width:500px){.change-band{grid-template-columns:1fr 1fr}
+  .cb-cell:nth-child(2){border-right:none}
+  .cb-cell:last-child{grid-column:1/-1;border-top:1px solid var(--rule)}}
+
+/* INSIGHT */
+.insight-row{padding:18px 28px;display:grid;grid-template-columns:3px 1fr;gap:14px}
+.ins-bar{background:var(--accent)}
+.ins-text{font-size:14px;line-height:1.75;color:var(--ink);opacity:.7}
+.ins-text strong{opacity:1}
 </style>
 </head>
 <body>
-<div class="page">
-  <div class="lbl">Chapter 1 · Fractions in Disguise</div>
-  <div class="title">Growth and Decline</div>
-  <div class="subtitle">When a quantity changes by the same percentage each period, the change compounds — small rates create surprising long-term effects. Explore growth (population, bacteria) and decline (depreciation).</div>
 
-  <div class="card">
-    <div class="scene-row">
-      <button class="sc-btn active" data-s="0">Population growth</button>
-      <button class="sc-btn" data-s="1">Depreciation (TV/vehicle)</button>
-      <button class="sc-btn" data-s="2">Bacteria growth</button>
-      <button class="sc-btn" data-s="3">Village decline</button>
-    </div>
+<div class="masthead">
+  <div class="mast-tag">Ch. 8 · Percentage & Interest</div>
+  <div class="mast-title">Growth & Decline</div>
+  <div class="mast-right">Grade 8 · Oxford / Bhanzu</div>
+</div>
 
-    <div class="sl-row">
-      <label id="initLabel">Initial population</label>
-      <input type="range" id="initSlider" min="100" max="100000" step="100" value="15000" style="accent-color:var(--blue)">
-      <span class="sl-val" style="color:var(--blue)" id="initVal">15,000</span>
-    </div>
-    <div class="sl-row">
-      <label id="rateLabel">Rate per period (%)</label>
-      <input type="range" id="rateSlider" min="0.5" max="30" step="0.5" value="3" style="accent-color:var(--orange)">
-      <span class="sl-val" style="color:var(--orange)" id="rateVal">3%</span>
-    </div>
-    <div class="sl-row">
-      <label id="periodsLabel">Periods</label>
-      <input type="range" id="periodsSlider" min="1" max="30" step="1" value="3" style="accent-color:var(--green)">
-      <span class="sl-val" style="color:var(--green)" id="periodsVal">3</span>
-    </div>
+<div class="scene-bar" id="scene-bar">
+  <button class="sn-btn active" data-s="0">Population<br>growth</button>
+  <button class="sn-btn" data-s="1">Depreciation</button>
+  <button class="sn-btn" data-s="2">Bacteria</button>
+  <button class="sn-btn" data-s="3">Village<br>decline</button>
+</div>
 
-    <div class="main-layout">
-      <div><canvas id="cvs" height="260"></canvas></div>
-      <div class="side-panel" id="sidePanel"></div>
-    </div>
+<div class="context-strip" id="context-strip"></div>
 
-    <div class="insight" id="insight"></div>
+<div class="controls">
+  <div class="ctrl-block">
+    <div class="ctrl-head">
+      <span class="ctrl-label" id="init-lbl">Initial value</span>
+      <span class="ctrl-val" id="init-disp">15,000</span>
+    </div>
+    <input type="range" id="init-sl" min="100" max="100000" step="100" value="15000">
+  </div>
+  <div class="ctrl-block">
+    <div class="ctrl-head">
+      <span class="ctrl-label" id="rate-lbl">Rate per period</span>
+      <span class="ctrl-val" id="rate-disp">3%</span>
+    </div>
+    <input type="range" id="rate-sl" min="0.5" max="30" step="0.5" value="3">
   </div>
 </div>
 
+<div class="step-bar">
+  <span class="step-lbl">Step through</span>
+  <button class="step-btn" id="prev-btn">−</button>
+  <div class="step-num"><span id="cur-period">0</span> / <span id="max-period">10</span> <span id="period-unit" style="font-family:var(--mono);font-size:14px;opacity:.5">yrs</span></div>
+  <button class="step-btn" id="next-btn">+</button>
+  <input type="range" id="period-sl" min="1" max="30" step="1" value="10" style="flex:1;max-width:200px">
+  <span style="font-family:var(--mono);font-size:11px;opacity:.4">max periods</span>
+  <button class="reset-btn" id="reset-btn">Reset</button>
+</div>
+
+<div class="hero-section">
+  <div class="hero-cell">
+    <div class="hc-label">Starting value</div>
+    <div class="hc-val" id="start-val">15,000</div>
+    <div class="hc-sub" id="start-unit">people</div>
+  </div>
+  <div class="hero-cell">
+    <div class="hc-label" id="now-label">Now (year 0)</div>
+    <div class="hc-val accent" id="now-val">15,000</div>
+    <div class="hc-sub" id="now-unit">people</div>
+  </div>
+</div>
+
+<div class="calc-strip" id="calc-strip">Press + to step through one period at a time and see the calculation.</div>
+
+<div class="chart-section">
+  <div class="chart-head">Full curve — dot shows current position</div>
+  <canvas id="cvs" style="width:100%;display:block;max-height:200px"></canvas>
+</div>
+
+<div class="change-band" id="change-band"></div>
+
+<div class="insight-row" id="insight-row"></div>
+
 <script>
-const SCENES = [
-  {init:15000,rate:3,periods:10,initLbl:'Initial population',rateLbl:'Annual growth rate (%)',periodsLbl:'Years',isGrowth:true,unit:'people',color:'#2c5f9e',
-   context:'City of 15,000 growing at 3% per year', formula:'P × (1.03)ⁿ'},
-  {init:21000,rate:5,periods:5,initLbl:'Purchase price (₹)',rateLbl:'Annual depreciation (%)',periodsLbl:'Years',isGrowth:false,unit:'₹',color:'#c0392b',
-   context:'TV depreciating 5% per year', formula:'P × (0.95)ⁿ'},
-  {init:506000,rate:2.5,periods:4,initLbl:'Initial bacteria count',rateLbl:'Hourly growth rate (%)',periodsLbl:'Hours',isGrowth:true,unit:'bacteria',color:'#1a7a4a',
-   context:'Bacteria doubling every ~28 hours', formula:'P × (1.025)ⁿ'},
-  {init:1250,rate:10,periods:5,initLbl:'Initial population',rateLbl:'Decline per decade (%)',periodsLbl:'Decades',isGrowth:false,unit:'people',color:'#e08020',
-   context:'Village losing 10% per decade', formula:'P × (0.90)ⁿ'},
+const SCENES=[
+  {init:15000,rate:3,periods:10,isGrowth:true,unit:'people',
+   initLbl:'Initial population',rateLbl:'Annual growth rate',periodUnit:'yr',
+   context:'A city of <strong>15,000 people</strong> grows by <strong>3% every year</strong>. Each year, 3% more people are added — but 3% of a bigger number is bigger than 3% of a smaller one.',
+   accent:'#1a5fa8',accentLt:'#e8eef9',accentBg:'#f0f4fb'},
+  {init:21000,rate:5,periods:5,isGrowth:false,unit:'₹',
+   initLbl:'Purchase price (₹)',rateLbl:'Annual depreciation',periodUnit:'yr',
+   context:'A TV bought for <strong>₹21,000</strong> loses <strong>5% of its value every year</strong>. Each year it loses 5% of whatever it is currently worth — so the loss gets smaller each year.',
+   accent:'#b83020',accentLt:'#fdecea',accentBg:'#fdf3f2'},
+  {init:5000,rate:8,periods:12,isGrowth:true,unit:'cells',
+   initLbl:'Initial cell count',rateLbl:'Hourly growth rate',periodUnit:'hr',
+   context:'A colony of <strong>5,000 bacteria</strong> grows by <strong>8% per hour</strong>. Exponential growth — the colony doubles roughly every 9 hours.',
+   accent:'#1e7d4a',accentLt:'#e5f3ec',accentBg:'#f0f7f3'},
+  {init:1250,rate:10,periods:5,isGrowth:false,unit:'people',
+   initLbl:'Initial population',rateLbl:'Decline per decade',periodUnit:'dec',
+   context:'A village of <strong>1,250 people</strong> loses <strong>10% of its population each decade</strong> to migration. It never quite reaches zero — each loss is 10% of a smaller number.',
+   accent:'#b86010',accentLt:'#fef3d7',accentBg:'#fef8ed'},
 ];
 
-let sc=0, init=15000, rate=3, periods=10;
+const st={sc:0,init:15000,rate:3,periods:10,cur:0};
 
-function loadScene(i) {
-  sc=i;
-  const s=SCENES[i];
-  init=s.init; rate=s.rate; periods=s.periods;
-  document.getElementById('initSlider').value=init;
-  document.getElementById('rateSlider').value=rate;
-  document.getElementById('periodsSlider').value=periods;
-  document.getElementById('initVal').textContent=init.toLocaleString('en-IN');
-  document.getElementById('rateVal').textContent=rate+'%';
-  document.getElementById('periodsVal').textContent=periods;
-  document.getElementById('initLabel').textContent=s.initLbl;
-  document.getElementById('rateLabel').textContent=s.rateLbl;
-  document.getElementById('periodsLabel').textContent=s.periodsLbl;
-  update();
+function setAccent(s){
+  document.documentElement.style.setProperty('--accent',s.accent);
+  document.documentElement.style.setProperty('--accent-lt',s.accentLt);
+  document.documentElement.style.setProperty('--accent-bg',s.accentBg);
 }
 
-function computeValues() {
-  const s=SCENES[sc];
-  const factor = s.isGrowth ? (1+rate/100) : (1-rate/100);
-  const vals=[init];
-  for(let i=1;i<=periods;i++) vals.push(vals[vals.length-1]*factor);
-  return vals;
+function allVals(){
+  const s=SCENES[st.sc];
+  const f=s.isGrowth?1+st.rate/100:1-st.rate/100;
+  const v=[st.init];
+  for(let i=1;i<=st.periods;i++) v.push(v[v.length-1]*f);
+  return v;
 }
 
-function drawChart(vals) {
+function fmtN(n,unit){
+  if(unit==='₹') return '₹'+Math.round(n).toLocaleString('en-IN');
+  return Math.round(n).toLocaleString('en-IN');
+}
+
+function fmtShort(n){
+  if(n>=100000) return (n/100000).toFixed(1)+'L';
+  if(n>=1000) return (n/1000).toFixed(1)+'k';
+  return Math.round(n).toString();
+}
+
+function drawChart(vals,cur){
   const cvs=document.getElementById('cvs');
-  const PR=window.devicePixelRatio||1;
+  const PR=Math.min(window.devicePixelRatio||1,2);
   const W=cvs.parentElement.clientWidth;
-  cvs.width=W*PR; cvs.height=260*PR;
-  cvs.style.width=W+'px'; cvs.style.height='260px';
+  const H=Math.min(200,Math.round(W*0.38));
+  cvs.width=W*PR; cvs.height=H*PR;
+  cvs.style.width=W+'px'; cvs.style.height=H+'px';
   const ctx=cvs.getContext('2d');
   ctx.scale(PR,PR);
-  ctx.fillStyle='#fafaf8'; ctx.fillRect(0,0,W,260);
 
-  const PAD={l:56,r:16,t:16,b:36};
-  const cW=W-PAD.l-PAD.r, cH=260-PAD.t-PAD.b;
-  const minV=Math.min(...vals)*0.95, maxV=Math.max(...vals)*1.05;
-  const range=maxV-minV||1;
-  const s=SCENES[sc];
+  const s=SCENES[st.sc];
+  const PAD={l:44,r:18,t:14,b:28};
+  const cW=W-PAD.l-PAD.r,cH=H-PAD.t-PAD.b;
+  const n=vals.length-1;
+  const minV=Math.min(...vals)*0.92,maxV=Math.max(...vals)*1.08;
+  const rng=maxV-minV||1;
+  const px=i=>PAD.l+(i/n)*cW;
+  const py=v=>PAD.t+cH-((v-minV)/rng)*cH;
 
-  const px=i=>PAD.l+(i/periods)*cW;
-  const py=v=>PAD.t+cH-((v-minV)/range)*cH;
+  ctx.fillStyle=s.accentBg;
+  ctx.fillRect(0,0,W,H);
 
-  // Grid
-  for(let g=0;g<=4;g++){
-    const v=minV+range*g/4;
+  // Grid lines
+  for(let g=0;g<=3;g++){
+    const v=minV+rng*g/3;
     const y=py(v);
-    ctx.beginPath(); ctx.strokeStyle='#e8e4de'; ctx.lineWidth=1;
-    ctx.moveTo(PAD.l,y); ctx.lineTo(W-PAD.r,y); ctx.stroke();
-    ctx.fillStyle='#9a958e'; ctx.font='10px DM Mono'; ctx.textAlign='right';
-    const label=v>=1000?(v/1000).toFixed(1)+'k':Math.round(v).toString();
-    ctx.fillText(label,PAD.l-5,y+4);
+    ctx.beginPath();ctx.strokeStyle=s.accentLt;ctx.lineWidth=1;
+    ctx.moveTo(PAD.l,y);ctx.lineTo(W-PAD.r,y);ctx.stroke();
+    ctx.fillStyle=s.accent+'99';ctx.font=`10px DM Mono`;ctx.textAlign='right';
+    ctx.fillText(fmtShort(v),PAD.l-4,y+4);
   }
 
-  // Axis labels
-  ctx.fillStyle='#9a958e'; ctx.font='10px DM Sans'; ctx.textAlign='center';
-  for(let i=0;i<=Math.min(periods,10);i++){
-    const step=Math.ceil(periods/10);
-    const ii=i*step;
-    if(ii>periods) break;
-    ctx.fillText(ii,px(ii),260-PAD.b+16);
+  // X labels
+  ctx.fillStyle=s.accent+'88';ctx.font='10px DM Mono';ctx.textAlign='center';
+  const step=Math.max(1,Math.ceil(n/8));
+  for(let i=0;i<=n;i+=step){
+    ctx.fillText(i,px(i),H-PAD.b+14);
   }
 
-  // Fill under curve
+  // Shaded area
   ctx.beginPath();
   ctx.moveTo(px(0),py(vals[0]));
   vals.forEach((_,i)=>ctx.lineTo(px(i),py(vals[i])));
-  ctx.lineTo(px(periods),PAD.t+cH);
+  ctx.lineTo(px(n),PAD.t+cH);
   ctx.lineTo(PAD.l,PAD.t+cH);
   ctx.closePath();
-  ctx.fillStyle=s.color+'22'; ctx.fill();
+  ctx.fillStyle=s.accent+'18';ctx.fill();
 
-  // Curve
-  ctx.beginPath();
-  ctx.strokeStyle=s.color; ctx.lineWidth=2.5;
+  // Line
+  ctx.beginPath();ctx.strokeStyle=s.accent;ctx.lineWidth=2.5;ctx.lineJoin='round';
   vals.forEach((v,i)=>i===0?ctx.moveTo(px(i),py(v)):ctx.lineTo(px(i),py(v)));
   ctx.stroke();
 
-  // Dots
+  // Dots — past ones small
   vals.forEach((v,i)=>{
-    ctx.beginPath(); ctx.fillStyle=s.color;
-    ctx.arc(px(i),py(v),4,0,Math.PI*2); ctx.fill();
+    if(i>cur) return;
+    ctx.beginPath();
+    ctx.fillStyle=i===cur?s.accent:s.accent+'55';
+    ctx.arc(px(i),py(v),i===cur?6:3,0,Math.PI*2);
+    ctx.fill();
   });
 
-  // Start/end labels
-  ctx.fillStyle=s.color; ctx.font='bold 11px DM Mono'; ctx.textAlign='left';
-  ctx.fillText(vals[0].toLocaleString('en-IN'),PAD.l+4,py(vals[0])-6);
-  ctx.textAlign=periods>5?'right':'left';
-  ctx.fillText(Math.round(vals[vals.length-1]).toLocaleString('en-IN'),px(periods)+(periods>5?-4:4),py(vals[vals.length-1])-6);
+  // Current vertical line
+  if(cur>0){
+    ctx.beginPath();ctx.strokeStyle=s.accent;ctx.lineWidth=1;ctx.setLineDash([4,3]);
+    ctx.moveTo(px(cur),PAD.t);ctx.lineTo(px(cur),PAD.t+cH);ctx.stroke();
+    ctx.setLineDash([]);
+  }
 }
 
-function update() {
-  const vals=computeValues();
-  drawChart(vals);
-  const s=SCENES[sc];
+function render(){
+  const s=SCENES[st.sc];
+  const vals=allVals();
+  const cur=Math.min(st.cur,vals.length-1);
+  const curVal=vals[cur];
+  const prevVal=cur>0?vals[cur-1]:null;
+
+  // Hero
+  document.getElementById('start-val').textContent=fmtN(st.init,s.unit).replace('₹','');
+  document.getElementById('start-unit').textContent=(s.unit==='₹'?'₹ ':'')+s.unit;
+  document.getElementById('now-label').textContent=`After ${cur} ${s.periodUnit}${cur!==1?'s':''}`;
+  document.getElementById('now-val').textContent=fmtN(curVal,s.unit).replace('₹','');
+  document.getElementById('now-unit').textContent=(s.unit==='₹'?'₹ ':'')+s.unit;
+
+  // Calc strip
+  const calcEl=document.getElementById('calc-strip');
+  if(cur===0){
+    calcEl.innerHTML=`Starting value: <span class="hl">${fmtN(st.init,s.unit)}</span>. Press <em>+</em> to step to the next ${s.periodUnit==='hr'?'hour':s.periodUnit==='dec'?'decade':'year'}.`;
+  } else {
+    const f=(s.isGrowth?1+st.rate/100:1-st.rate/100).toFixed(3);
+    const op=s.isGrowth?'×':'×';
+    calcEl.innerHTML=`Period <span class="hl">${cur}</span>: &nbsp;<span class="hl">${fmtN(prevVal,s.unit)}</span> × <em>${f}</em> = <span class="hl">${fmtN(curVal,s.unit)}</span>&nbsp;&nbsp;·&nbsp;&nbsp;${s.isGrowth?'added':'lost'}: <em>${fmtN(Math.abs(curVal-prevVal),s.unit)}</em>`;
+  }
+
+  // Chart
+  drawChart(vals,cur);
+
+  // Change band
   const finalVal=vals[vals.length-1];
-  const changePct=(finalVal-init)/init*100;
+  const change=finalVal-st.init;
+  const changePct=(change/st.init*100);
+  const curChange=curVal-st.init;
+  const curChangePct=(curChange/st.init*100);
+  document.getElementById('change-band').innerHTML=`
+    <div class="cb-cell">
+      <div class="cb-label">After all ${st.periods} periods</div>
+      <div class="cb-big" style="color:var(--accent)">${fmtN(finalVal,s.unit)}</div>
+      <div class="cb-sub">${changePct>=0?'+':''}${changePct.toFixed(1)}% total</div>
+    </div>
+    <div class="cb-cell">
+      <div class="cb-label">Change per period</div>
+      <div class="cb-big">${s.isGrowth?'+':'−'}${st.rate}%</div>
+      <div class="cb-sub">factor: ×${(s.isGrowth?1+st.rate/100:1-st.rate/100).toFixed(3)}</div>
+    </div>
+    <div class="cb-cell">
+      <div class="cb-label">Right now (period ${cur})</div>
+      <div class="cb-big">${curChangePct>=0?'+':''}${curChangePct.toFixed(1)}%</div>
+      <div class="cb-sub">from starting value</div>
+    </div>
+  `;
 
-  document.getElementById('sidePanel').innerHTML=`
-    <div class="stat-item"><div class="si-lbl">Starting value</div><div class="si-val">${init.toLocaleString('en-IN')} ${s.unit}</div></div>
-    <div class="stat-item"><div class="si-lbl">After ${periods} ${s.periodsLbl.split(' ')[0].toLowerCase()}</div><div class="si-val" style="color:${s.color}">${Math.round(finalVal).toLocaleString('en-IN')} ${s.unit}</div></div>
-    <div class="stat-item"><div class="si-lbl">Net change</div><div class="si-val" style="color:${s.isGrowth?'var(--green)':'var(--red)'}">${changePct>=0?'+':''}${changePct.toFixed(1)}%</div></div>
-    <div class="stat-item"><div class="si-lbl">Factor per period</div><div class="si-val">${s.isGrowth?1+rate/100:1-rate/100}</div></div>`;
+  // Nav buttons
+  document.getElementById('prev-btn').disabled=cur===0;
+  document.getElementById('next-btn').disabled=cur>=st.periods;
+  document.getElementById('cur-period').textContent=cur;
+  document.getElementById('max-period').textContent=st.periods;
+  document.getElementById('period-unit').textContent=s.periodUnit+'s';
 
-  document.getElementById('insight').innerHTML=
-    `<strong>Formula:</strong> ${s.formula}
-    <span class="eq">= ${init.toLocaleString()} × ${(s.isGrowth?1+rate/100:1-rate/100).toFixed(4)}^${periods}</span>
-    <span class="eq">= ${init.toLocaleString()} × ${Math.pow(s.isGrowth?1+rate/100:1-rate/100,periods).toFixed(5)}</span>
-    <span class="eq">= <strong>${Math.round(finalVal).toLocaleString('en-IN')} ${s.unit}</strong></span>
-    ${s.isGrowth?`Each period, the value is multiplied by ${1+rate/100} — which is why even a small rate creates a large long-term change.`:`Each period, the value is multiplied by ${(1-rate/100).toFixed(3)} — the decline is always relative to the current value, not the original.`}`;
+  // Insight
+  const doublingPeriod=Math.log(2)/Math.log(1+st.rate/100);
+  const halvingPeriod=Math.log(0.5)/Math.log(1-st.rate/100);
+  document.getElementById('insight-row').innerHTML=`
+    <div class="ins-bar"></div>
+    <p class="ins-text"><strong>Formula: A = P × (${s.isGrowth?'1 + r':'1 − r'})ⁿ</strong> &nbsp;=&nbsp; ${fmtN(st.init,s.unit)} × ${(s.isGrowth?1+st.rate/100:1-st.rate/100).toFixed(3)}^${st.periods} &nbsp;=&nbsp; <strong>${fmtN(finalVal,s.unit)}</strong>. ${s.isGrowth?`At ${st.rate}% growth, the value doubles roughly every <strong>${doublingPeriod.toFixed(1)} periods</strong> — notice how each step adds a little more than the one before.`:`At ${st.rate}% decline, the value halves roughly every <strong>${halvingPeriod.toFixed(1)} periods</strong>. Each loss is smaller in absolute terms than the last, but the percentage is always the same.`}</p>
+  `;
 }
 
-document.querySelectorAll('.sc-btn').forEach(b=>{
-  b.onclick=()=>{
-    document.querySelectorAll('.sc-btn').forEach(x=>x.classList.toggle('active',x===b));
-    loadScene(parseInt(b.dataset.s));
-  };
-});
-document.getElementById('initSlider').oninput=e=>{init=parseInt(e.target.value);document.getElementById('initVal').textContent=parseInt(e.target.value).toLocaleString('en-IN');update();};
-document.getElementById('rateSlider').oninput=e=>{rate=parseFloat(e.target.value);document.getElementById('rateVal').textContent=rate+'%';update();};
-document.getElementById('periodsSlider').oninput=e=>{periods=parseInt(e.target.value);document.getElementById('periodsVal').textContent=periods;update();};
+function loadScene(i){
+  const s=SCENES[i];
+  st.sc=i; st.init=s.init; st.rate=s.rate; st.periods=s.periods; st.cur=0;
+  setAccent(s);
+  document.getElementById('context-strip').innerHTML=s.context;
+  document.getElementById('init-lbl').textContent=s.initLbl;
+  document.getElementById('rate-lbl').textContent=s.rateLbl;
+  document.getElementById('init-sl').value=st.init;
+  document.getElementById('init-disp').textContent=(s.unit==='₹'?'₹':'')+st.init.toLocaleString('en-IN');
+  document.getElementById('rate-sl').value=st.rate;
+  document.getElementById('rate-disp').textContent=st.rate+'%';
+  document.getElementById('period-sl').value=st.periods;
+  document.querySelectorAll('.sn-btn').forEach((b,j)=>b.classList.toggle('active',j===i));
+  render();
+}
 
-window.addEventListener('resize',()=>{const vals=computeValues();drawChart(vals);});
+document.querySelectorAll('.sn-btn').forEach(b=>{
+  b.addEventListener('click',()=>loadScene(+b.dataset.s));
+});
+
+document.getElementById('next-btn').addEventListener('click',()=>{
+  if(st.cur<st.periods){st.cur++;render();}
+});
+document.getElementById('prev-btn').addEventListener('click',()=>{
+  if(st.cur>0){st.cur--;render();}
+});
+document.getElementById('reset-btn').addEventListener('click',()=>{st.cur=0;render();});
+
+document.getElementById('init-sl').addEventListener('input',e=>{
+  const s=SCENES[st.sc];
+  st.init=+e.target.value; st.cur=0;
+  document.getElementById('init-disp').textContent=(s.unit==='₹'?'₹':'')+st.init.toLocaleString('en-IN');
+  render();
+});
+document.getElementById('rate-sl').addEventListener('input',e=>{
+  st.rate=+e.target.value; st.cur=0;
+  document.getElementById('rate-disp').textContent=st.rate+'%';
+  render();
+});
+document.getElementById('period-sl').addEventListener('input',e=>{
+  st.periods=+e.target.value; st.cur=Math.min(st.cur,st.periods);
+  render();
+});
+
+window.addEventListener('resize',render);
 loadScene(0);
 </script>
 </body>
